@@ -2,7 +2,7 @@ import logging
 import json
 from flask import Blueprint, render_template, request, jsonify, flash
 from sqlalchemy import text
-from app import db
+from main import db
 from models import ProductEligibility, AdSalesMetrics, TotalSalesMetrics
 from gemini_service import GeminiService
 

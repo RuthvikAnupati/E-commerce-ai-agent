@@ -2,7 +2,7 @@ import logging
 import csv
 import os
 from datetime import datetime, date
-from app import db
+from main import db
 from models import ProductEligibility, AdSalesMetrics, TotalSalesMetrics
 
 def initialize_sample_data():
