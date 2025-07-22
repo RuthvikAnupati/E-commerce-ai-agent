@@ -103,11 +103,17 @@ Your repository will include:
 
 ### Option 4: Deploy on Vercel (Detailed Steps)
 
-#### Step 1: Prepare Your Repository
-Your GitHub repo is ready, but push the new Vercel config files:
+#### Step 1: Fix Vercel Build Issue
+The build failed because of missing requirements.txt. Here's the solution:
+
+**In your Replit Shell, run:**
 ```bash
-git add vercel.json runtime.txt
-git commit -m "Add Vercel deployment configuration"
+# Copy the requirements file
+cp requirements-vercel.txt requirements.txt
+
+# Push the fix to GitHub
+git add vercel.json runtime.txt requirements.txt requirements-vercel.txt
+git commit -m "Fix Vercel deployment - add proper requirements.txt"
 git push origin main
 ```
 
@@ -123,7 +129,7 @@ git push origin main
 **Framework Preset:** Other  
 **Root Directory:** `./` (leave default)  
 **Build and Output Settings:**
-- Build Command: `pip install flask flask-sqlalchemy google-genai gunicorn psycopg2-binary email-validator`
+- Build Command: (leave empty - Vercel will use requirements.txt automatically)
 - Output Directory: (leave empty)
 - Install Command: (leave default)
 
