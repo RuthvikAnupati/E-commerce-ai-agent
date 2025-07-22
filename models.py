@@ -1,58 +1,42 @@
 from app import db
-from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean
+from sqlalchemy import Column, Integer, String, Float, DateTime, Boolean, Text, Date
 from datetime import datetime
 
-class Product(db.Model):
-    __tablename__ = 'products'
+class ProductEligibility(db.Model):
+    __tablename__ = 'product_eligibility'
     
     id = db.Column(db.Integer, primary_key=True)
-    product_id = db.Column(db.String(50), unique=True, nullable=False)
-    product_name = db.Column(db.String(200), nullable=False)
-    category = db.Column(db.String(100), nullable=False)
-    brand = db.Column(db.String(100), nullable=False)
-    price = db.Column(db.Float, nullable=False)
-    is_eligible_for_ads = db.Column(db.Boolean, default=True)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    eligibility_datetime_utc = db.Column(db.DateTime, nullable=False)
+    item_id = db.Column(db.Integer, nullable=False)
+    eligibility = db.Column(db.Boolean, nullable=False)
+    message = db.Column(db.Text)
     
     def __repr__(self):
-        return f'<Product {self.product_name}>'
+        return f'<ProductEligibility {self.item_id} - {self.eligibility}>'
 
-class AdSales(db.Model):
-    __tablename__ = 'ad_sales'
+class AdSalesMetrics(db.Model):
+    __tablename__ = 'ad_sales_metrics'
     
     id = db.Column(db.Integer, primary_key=True)
-    product_id = db.Column(db.String(50), db.ForeignKey('products.product_id'), nullable=False)
-    campaign_name = db.Column(db.String(200), nullable=False)
-    ad_spend = db.Column(db.Float, nullable=False)
-    ad_revenue = db.Column(db.Float, nullable=False)
+    date = db.Column(db.Date, nullable=False)
+    item_id = db.Column(db.Integer, nullable=False)
+    ad_sales = db.Column(db.Float, nullable=False)
     impressions = db.Column(db.Integer, nullable=False)
+    ad_spend = db.Column(db.Float, nullable=False)
     clicks = db.Column(db.Integer, nullable=False)
-    cpc = db.Column(db.Float, nullable=False)  # Cost Per Click
-    ctr = db.Column(db.Float, nullable=False)  # Click Through Rate
-    conversion_rate = db.Column(db.Float, nullable=False)
-    date = db.Column(db.DateTime, default=datetime.utcnow)
-    
-    # Relationship to Product
-    product = db.relationship('Product', backref=db.backref('ad_sales', lazy=True))
+    units_sold = db.Column(db.Integer, nullable=False)
     
     def __repr__(self):
-        return f'<AdSales {self.product_id} - {self.campaign_name}>'
+        return f'<AdSalesMetrics {self.item_id} - {self.date}>'
 
-class TotalSales(db.Model):
-    __tablename__ = 'total_sales'
+class TotalSalesMetrics(db.Model):
+    __tablename__ = 'total_sales_metrics'
     
     id = db.Column(db.Integer, primary_key=True)
-    product_id = db.Column(db.String(50), db.ForeignKey('products.product_id'), nullable=False)
-    total_revenue = db.Column(db.Float, nullable=False)
-    units_sold = db.Column(db.Integer, nullable=False)
-    organic_revenue = db.Column(db.Float, nullable=False)  # Revenue not from ads
-    total_orders = db.Column(db.Integer, nullable=False)
-    average_order_value = db.Column(db.Float, nullable=False)
-    return_rate = db.Column(db.Float, nullable=False)
-    date = db.Column(db.DateTime, default=datetime.utcnow)
-    
-    # Relationship to Product
-    product = db.relationship('Product', backref=db.backref('total_sales', lazy=True))
+    date = db.Column(db.Date, nullable=False)
+    item_id = db.Column(db.Integer, nullable=False)
+    total_sales = db.Column(db.Float, nullable=False)
+    total_units_ordered = db.Column(db.Integer, nullable=False)
     
     def __repr__(self):
-        return f'<TotalSales {self.product_id}>'
+        return f'<TotalSalesMetrics {self.item_id} - {self.date}>'

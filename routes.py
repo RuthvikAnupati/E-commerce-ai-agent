@@ -3,7 +3,7 @@ import json
 from flask import Blueprint, render_template, request, jsonify, flash
 from sqlalchemy import text
 from app import db
-from models import Product, AdSales, TotalSales
+from models import ProductEligibility, AdSalesMetrics, TotalSalesMetrics
 from gemini_service import GeminiService
 
 main_bp = Blueprint('main', __name__)
@@ -100,41 +100,34 @@ def process_question(question):
 def get_schema_info():
     """Get database schema information for the LLM."""
     schema_info = {
-        'products': {
-            'description': 'Product information and eligibility',
+        'product_eligibility': {
+            'description': 'Product eligibility for advertising with reasons',
             'columns': {
-                'product_id': 'Unique product identifier',
-                'product_name': 'Name of the product',
-                'category': 'Product category',
-                'brand': 'Product brand',
-                'price': 'Product price',
-                'is_eligible_for_ads': 'Whether product is eligible for advertising'
+                'eligibility_datetime_utc': 'Date and time when eligibility was checked',
+                'item_id': 'Product item identifier',
+                'eligibility': 'Boolean indicating if product is eligible for ads (TRUE/FALSE)',
+                'message': 'Message explaining why product is not eligible (if applicable)'
             }
         },
-        'ad_sales': {
-            'description': 'Advertising sales and metrics data',
+        'ad_sales_metrics': {
+            'description': 'Daily advertising performance metrics by product',
             'columns': {
-                'product_id': 'Product identifier (foreign key)',
-                'campaign_name': 'Advertising campaign name',
+                'date': 'Date of the metrics',
+                'item_id': 'Product item identifier',
+                'ad_sales': 'Revenue generated from advertising',
+                'impressions': 'Number of ad impressions shown',
                 'ad_spend': 'Amount spent on advertising',
-                'ad_revenue': 'Revenue generated from ads',
-                'impressions': 'Number of ad impressions',
-                'clicks': 'Number of ad clicks',
-                'cpc': 'Cost Per Click',
-                'ctr': 'Click Through Rate',
-                'conversion_rate': 'Ad conversion rate'
+                'clicks': 'Number of clicks on ads',
+                'units_sold': 'Number of units sold through ads'
             }
         },
-        'total_sales': {
-            'description': 'Total sales and metrics data',
+        'total_sales_metrics': {
+            'description': 'Daily total sales performance by product',
             'columns': {
-                'product_id': 'Product identifier (foreign key)',
-                'total_revenue': 'Total revenue for the product',
-                'units_sold': 'Number of units sold',
-                'organic_revenue': 'Revenue not from advertising',
-                'total_orders': 'Total number of orders',
-                'average_order_value': 'Average order value',
-                'return_rate': 'Product return rate'
+                'date': 'Date of the metrics',
+                'item_id': 'Product item identifier',
+                'total_sales': 'Total sales revenue for the product',
+                'total_units_ordered': 'Total number of units ordered'
             }
         }
     }
@@ -178,11 +171,11 @@ def api_stats():
     """Get basic statistics about the data."""
     try:
         stats = {
-            'total_products': Product.query.count(),
-            'total_ad_campaigns': AdSales.query.count(),
-            'total_sales_records': TotalSales.query.count(),
-            'total_revenue': db.session.query(db.func.sum(TotalSales.total_revenue)).scalar() or 0,
-            'total_ad_spend': db.session.query(db.func.sum(AdSales.ad_spend)).scalar() or 0,
+            'total_eligibility_records': ProductEligibility.query.count(),
+            'total_ad_records': AdSalesMetrics.query.count(),
+            'total_sales_records': TotalSalesMetrics.query.count(),
+            'total_revenue': db.session.query(db.func.sum(TotalSalesMetrics.total_sales)).scalar() or 0,
+            'total_ad_spend': db.session.query(db.func.sum(AdSalesMetrics.ad_spend)).scalar() or 0,
         }
         return jsonify(stats)
     except Exception as e:

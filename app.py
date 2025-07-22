@@ -31,7 +31,7 @@ db.init_app(app)
 
 with app.app_context():
     # Import models to ensure tables are created
-    from models import Product, AdSales, TotalSales
+    from models import ProductEligibility, AdSalesMetrics, TotalSalesMetrics
     from routes import main_bp
     from data_loader import initialize_sample_data
     

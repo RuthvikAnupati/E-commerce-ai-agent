@@ -24,17 +24,17 @@ Preferred communication style: Simple, everyday language.
 - **Icons**: Bootstrap Icons for consistent iconography
 
 ### Database Schema
-The application uses three main entities:
-- **Products**: Core product information (ID, name, category, brand, price, ad eligibility)
-- **AdSales**: Advertising campaign performance data (spend, revenue, impressions, clicks, conversion rates)
-- **TotalSales**: Overall sales metrics (revenue, units sold, orders, return rates)
+The application uses three main entities from real e-commerce CSV data:
+- **ProductEligibility**: Product advertising eligibility status with detailed messages (4,382 total records)
+- **AdSalesMetrics**: Daily advertising performance data (date, item_id, ad_sales, impressions, ad_spend, clicks, units_sold)
+- **TotalSalesMetrics**: Daily total sales performance (date, item_id, total_sales, total_units_ordered)
 
 ## Key Components
 
 ### Data Models (`models.py`)
-- **Product Model**: Stores product catalog information with foreign key relationships
-- **AdSales Model**: Tracks advertising campaign performance metrics including RoAS calculations
-- **TotalSales Model**: Aggregates overall sales performance data
+- **ProductEligibility Model**: Tracks advertising eligibility status with datetime stamps and detailed rejection messages
+- **AdSalesMetrics Model**: Daily advertising performance metrics by item_id including spend, sales, impressions, clicks
+- **TotalSalesMetrics Model**: Daily total sales performance by item_id including revenue and units ordered
 
 ### AI Service (`gemini_service.py`)
 - **GeminiService Class**: Handles communication with Google's Gemini AI
@@ -47,10 +47,10 @@ The application uses three main entities:
 - **Error Handling**: Comprehensive error management with user-friendly feedback
 
 ### Data Initialization (`data_loader.py`)
-- **Sample Data**: Pre-loads the database with realistic e-commerce sample data
-- **Product Catalog**: 8 sample products across different categories (Electronics, Clothing, Sports, Kitchen)
-- **Campaign Data**: Sample advertising campaigns with performance metrics
-- **Sales Data**: Historical sales data for analysis
+- **Real CSV Data**: Loads authentic e-commerce data from three CSV files
+- **Product Eligibility**: 4,382+ records of advertising eligibility decisions with reasons
+- **Ad Sales Metrics**: 3,696+ daily advertising performance records across products
+- **Total Sales Metrics**: 702+ daily sales performance records with revenue and unit data
 
 ## Data Flow
 

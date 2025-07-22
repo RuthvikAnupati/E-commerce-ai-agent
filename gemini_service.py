@@ -23,18 +23,21 @@ Database Schema:
 
 Important Guidelines:
 1. Only generate SELECT queries for data retrieval
-2. Use proper JOIN statements when querying multiple tables
+2. Use proper JOIN statements when querying multiple tables using item_id as the join key
 3. Use aggregate functions (SUM, AVG, COUNT, MAX, MIN) appropriately
-4. For RoAS (Return on Ad Spend) calculation: ad_revenue / ad_spend
-5. Always use proper WHERE clauses when filtering is needed
-6. Return only the SQL query without any explanation or formatting
-7. Do not include semicolons at the end
-8. Use proper column aliases for calculated fields
+4. For RoAS (Return on Ad Spend) calculation: SUM(ad_sales) / SUM(ad_spend)
+5. For CPC (Cost Per Click) calculation: ad_spend / clicks (when clicks > 0)
+6. Always use proper WHERE clauses when filtering is needed
+7. Return only the SQL query without any explanation or formatting
+8. Do not include semicolons at the end
+9. Use proper column aliases for calculated fields
+10. Use item_id to identify products across tables
 
 Example queries for reference:
-- Total sales: SELECT SUM(total_revenue) as total_sales FROM total_sales
-- RoAS calculation: SELECT (SUM(ad_revenue) / SUM(ad_spend)) as roas FROM ad_sales
-- Highest CPC: SELECT product_id, MAX(cpc) as highest_cpc FROM ad_sales GROUP BY product_id ORDER BY highest_cpc DESC LIMIT 1
+- Total sales: SELECT SUM(total_sales) as total_sales FROM total_sales_metrics
+- RoAS calculation: SELECT (SUM(ad_sales) / SUM(ad_spend)) as roas FROM ad_sales_metrics WHERE ad_spend > 0
+- Highest CPC: SELECT item_id, MAX(ad_spend / NULLIF(clicks, 0)) as highest_cpc FROM ad_sales_metrics WHERE clicks > 0 GROUP BY item_id ORDER BY highest_cpc DESC LIMIT 1
+- Products with most ad spend: SELECT item_id, SUM(ad_spend) as total_spend FROM ad_sales_metrics GROUP BY item_id ORDER BY total_spend DESC LIMIT 10
 """
 
             user_prompt = f"Convert this question to SQL: {question}"
