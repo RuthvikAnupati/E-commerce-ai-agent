@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block title %}Home - E-commerce AI Agent{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="text-center mb-5">
+            <h1 class="display-4 mb-3">
+                <i class="bi bi-robot text-primary"></i>
+                E-commerce AI Agent
+            </h1>
+            <p class="lead">Ask questions about your e-commerce data using natural language. Our AI agent will convert your questions to SQL queries and provide intelligent answers.</p>
+        </div>
+
+        <!-- Quick Start Card -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="bi bi-lightning-charge text-warning"></i>
+                    Quick Start
+                </h5>
+                <p class="card-text">Try asking questions like:</p>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <i class="bi bi-arrow-right text-primary"></i>
+                        "What is my total sales?"
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-arrow-right text-primary"></i>
+                        "Calculate the RoAS (Return on Ad Spend)"
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-arrow-right text-primary"></i>
+                        "Which product had the highest CPC (Cost Per Click)?"
+                    </li>
+                </ul>
+                <a href="{{ url_for('main.query_page') }}" class="btn btn-primary">
+                    <i class="bi bi-search"></i>
+                    Start Asking Questions
+                </a>
+            </div>
+        </div>
+
+        <!-- Features -->
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-database display-6 text-info mb-3"></i>
+                        <h5 class="card-title">Smart SQL Generation</h5>
+                        <p class="card-text">Automatically converts natural language questions to SQL queries using advanced AI.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-graph-up display-6 text-success mb-3"></i>
+                        <h5 class="card-title">E-commerce Analytics</h5>
+                        <p class="card-text">Analyze product sales, advertising performance, and customer metrics.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-chat-dots display-6 text-warning mb-3"></i>
+                        <h5 class="card-title">Human-Readable Responses</h5>
+                        <p class="card-text">Get clear, formatted answers that make sense of your data.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Database Stats -->
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="bi bi-bar-chart"></i>
+                    Database Statistics
+                </h5>
+                <div id="stats-container">
+                    <div class="text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading stats...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Load database statistics
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/api/stats')
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                document.getElementById('stats-container').innerHTML = `
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        Could not load statistics: ${data.error}
+                    </div>
+                `;
+                return;
+            }
+            
+            document.getElementById('stats-container').innerHTML = `
+                <div class="row text-center">
+                    <div class="col-md-2 mb-3">
+                        <div class="border rounded p-3">
+                            <div class="h4 text-primary mb-1">${data.total_products}</div>
+                            <small class="text-muted">Products</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="border rounded p-3">
+                            <div class="h4 text-info mb-1">${data.total_ad_campaigns}</div>
+                            <small class="text-muted">Ad Campaigns</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="border rounded p-3">
+                            <div class="h4 text-success mb-1">$${data.total_revenue.toLocaleString()}</div>
+                            <small class="text-muted">Total Revenue</small>
+                        </div>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <div class="border rounded p-3">
+                            <div class="h4 text-warning mb-1">$${data.total_ad_spend.toLocaleString()}</div>
+                            <small class="text-muted">Ad Spend</small>
+                        </div>
+                    </div>
+                    <div class="col-md-2 mb-3">
+                        <div class="border rounded p-3">
+                            <div class="h4 text-danger mb-1">${((data.total_revenue - data.total_ad_spend) / data.total_ad_spend * 100).toFixed(1)}%</div>
+                            <small class="text-muted">Overall ROI</small>
+                        </div>
+                    </div>
+                </div>
+            `;
+        })
+        .catch(error => {
+            console.error('Error loading stats:', error);
+            document.getElementById('stats-container').innerHTML = `
+                <div class="alert alert-warning">
+                    <i class="bi bi-exclamation-triangle"></i>
+                    Could not load statistics. Please check your connection.
+                </div>
+            `;
+        });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,125 @@
+/* Custom styles for the E-commerce AI Agent */
+
+.navbar-brand {
+    font-weight: 600;
+}
+
+.card {
+    border-radius: 8px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.btn {
+    border-radius: 6px;
+}
+
+.alert {
+    border-radius: 6px;
+}
+
+/* Code blocks */
+code {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.9em;
+}
+
+/* Loading animations */
+.spinner-border {
+    width: 2rem;
+    height: 2rem;
+}
+
+/* Form improvements */
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Table responsiveness */
+.table-responsive {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Footer */
+footer {
+    margin-top: auto;
+}
+
+/* Utility classes */
+.text-monospace {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+/* Stats cards */
+.border {
+    border-color: var(--bs-border-color) !important;
+}
+
+.border.rounded {
+    background-color: rgba(255, 255, 255, 0.05);
+    transition: background-color 0.3s ease;
+}
+
+.border.rounded:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Query result improvements */
+.bg-dark code {
+    background-color: transparent;
+    padding: 0;
+}
+
+/* Button groups */
+.btn-group .btn {
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .btn-group .btn {
+        width: 100%;
+        margin-right: 0;
+    }
+}
+
+/* Dark theme specific improvements */
+[data-bs-theme="dark"] .alert-info {
+    background-color: rgba(13, 110, 253, 0.15);
+    border-color: rgba(13, 110, 253, 0.3);
+}
+
+[data-bs-theme="dark"] .bg-dark {
+    background-color: #212529 !important;
+    border: 1px solid #495057;
+}
+
+/* Animation for results */
+.card {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
