@@ -26,30 +26,37 @@ The application works with three main datasets:
 2. **Ad Sales Metrics**: Daily advertising performance (spend, sales, impressions, clicks)
 3. **Total Sales Metrics**: Daily sales performance (revenue, units ordered)
 
-## Setup
+## Quick Start
 
-1. Clone the repository:
+1. **Clone and Setup**:
    ```bash
    git clone <repository-url>
    cd ecommerce-ai-agent
+   pip install flask flask-sqlalchemy google-genai gunicorn psycopg2-binary email-validator
    ```
 
-2. Install dependencies:
+2. **Configure Environment**:
    ```bash
-   pip install -r requirements.txt
+   export GEMINI_API_KEY="your-google-gemini-api-key"
+   export DATABASE_URL="postgresql://user:pass@host:port/db"  # Optional
    ```
 
-3. Set up environment variables:
-   ```bash
-   export GEMINI_API_KEY="your-gemini-api-key"
-   export DATABASE_URL="your-database-url"  # Optional, defaults to SQLite
-   export SESSION_SECRET="your-session-secret"  # Optional, random if not set
-   ```
-
-4. Run the application:
+3. **Run the Application**:
    ```bash
    gunicorn --bind 0.0.0.0:5000 --reload main:app
    ```
+
+4. **Access the AI Agent**:
+   - Web Interface: `http://localhost:5000`
+   - API: `POST http://localhost:5000/api/query`
+
+## Data Integration
+
+This project includes real e-commerce datasets:
+- **4,382 product eligibility records** with advertising approval status
+- **3,696 daily ad performance metrics** (spend, sales, impressions, clicks)
+- **702 daily sales records** with revenue and unit data
+- **Total Revenue**: Over $1M in authentic business data
 
 ## Usage
 

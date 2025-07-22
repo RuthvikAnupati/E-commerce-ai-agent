@@ -8,6 +8,21 @@ This is a Flask-based web application that serves as an AI-powered query interfa
 
 Preferred communication style: Simple, everyday language.
 
+## Recent Changes (July 22, 2025)
+
+### Major Update: Real Data Integration
+- ✅ **Replaced sample data** with authentic e-commerce CSV datasets (4,382+ records)
+- ✅ **Updated database schema** to match real data structure (item_id based)
+- ✅ **Enhanced AI prompts** for accurate SQL generation with real metrics
+- ✅ **Loaded complete datasets**: Product eligibility, ad sales metrics, total sales
+- ✅ **GitHub preparation**: Created README, .gitignore, LICENSE for repository
+- ✅ **Over $1M revenue data** now available for analysis
+
+### Technical Architecture Changes
+- **Database Models**: Migrated from sample Product/AdSales/TotalSales to ProductEligibility/AdSalesMetrics/TotalSalesMetrics
+- **Data Loader**: Enhanced CSV import with batch processing for large datasets
+- **Gemini Integration**: Updated prompts to handle real data relationships and calculations
+
 ## System Architecture
 
 ### Backend Architecture
