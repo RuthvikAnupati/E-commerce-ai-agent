@@ -101,20 +101,73 @@ Your repository will include:
    git push heroku main
    ```
 
-### Option 4: Deploy on Vercel
+### Option 4: Deploy on Vercel (Detailed Steps)
 
-1. **Connect Repository:**
-   - Go to [vercel.com](https://vercel.com)
-   - Import from GitHub: `RuthvikAnupati/E-commerce-ai-agent`
+#### Step 1: Prepare Your Repository
+Your GitHub repo is ready, but push the new Vercel config files:
+```bash
+git add vercel.json runtime.txt
+git commit -m "Add Vercel deployment configuration"
+git push origin main
+```
 
-2. **Configuration:**
-   - Framework: Other
-   - Build Command: `pip install -r requirements.txt`
-   - Start Command: `gunicorn main:app`
+#### Step 2: Create Vercel Account & Import Project
+1. **Go to [vercel.com](https://vercel.com)**
+2. **Sign up/Login** with GitHub account
+3. **Click "New Project"**
+4. **Import from GitHub:** Search for `E-commerce-ai-agent`
+5. **Select your repository:** `RuthvikAnupati/E-commerce-ai-agent`
+6. **Click "Import"**
 
-3. **Environment Variables:**
-   - Add `GEMINI_API_KEY`
-   - Add external PostgreSQL database URL
+#### Step 3: Configure Project Settings
+**Framework Preset:** Other  
+**Root Directory:** `./` (leave default)  
+**Build and Output Settings:**
+- Build Command: `pip install flask flask-sqlalchemy google-genai gunicorn psycopg2-binary email-validator`
+- Output Directory: (leave empty)
+- Install Command: (leave default)
+
+#### Step 4: Set Up Database
+**Option A: Use Neon (Free PostgreSQL)**
+1. Go to [neon.tech](https://neon.tech) → Create account
+2. Create new project: "ecommerce-ai-agent"
+3. Copy the connection string (looks like: `postgresql://user:pass@host/db`)
+
+**Option B: Use Supabase (Free PostgreSQL)**
+1. Go to [supabase.com](https://supabase.com) → Create account
+2. New project → Get connection string
+3. Enable "Use connection pooling"
+
+#### Step 5: Configure Environment Variables in Vercel
+In your Vercel project settings:
+1. **Go to Settings → Environment Variables**
+2. **Add these variables:**
+   - `GEMINI_API_KEY` = Your Google Gemini API key
+   - `DATABASE_URL` = Your PostgreSQL connection string
+   - `SESSION_SECRET` = Any random string (e.g., `my-secret-key-2025`)
+
+#### Step 6: Deploy & Test
+1. **Click "Deploy"** - Vercel will build and deploy automatically
+2. **Your app will be live at:** `your-project-name.vercel.app`
+3. **Test the deployment:** Visit the URL and try asking a question
+
+#### Step 7: Load Your Data
+Since Vercel is serverless, you need to trigger data loading:
+1. **Visit your deployed app**
+2. **The data loader runs automatically** on first visit
+3. **Your 4,382+ records and $1M+ revenue data** will be loaded
+
+#### Step 8: Custom Domain (Optional)
+1. **Go to Settings → Domains**
+2. **Add your custom domain:** `yourbusiness.com`
+3. **Configure DNS** as instructed by Vercel
+4. **Get SSL certificate** (automatic)
+
+#### Troubleshooting Common Issues:
+- **Build fails:** Check that all environment variables are set
+- **Database connection:** Verify DATABASE_URL format
+- **Gemini API:** Ensure GEMINI_API_KEY is valid
+- **Data loading:** Visit `/` to trigger automatic data import
 
 ## Required Environment Variables
 
